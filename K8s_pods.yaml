@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - image: nginx:1.11
+    name: nginx
+    ports:
+    - containerPort: 80
+	
+
+
+#kubectl run nginx --image=nginx;1.11 --replicas=1 --port=80
+
+
+*********************************************************************************************
+pod with volume:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - image: nginx:1.11
+    name: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /log/volumes
+      name: log	  
+  volumes:
+  - name: log
+	hostPath:
+      path: /var/log/pods
+    	
+		
+		
+************************************************************************************************
+multicontainer-pods:
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sewri
+spec:
+  containers:
+  - image: busybox
+    name: tails
+    command:
+    - sleep
+    - "3600"
+  - image: nginx  
+    name: sonic
+    env:
+    - name: NGINX_PORT
+      value: "8080"
+
+
+
+*******************************************************************************************
+health_check_with_env_variable
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: simple-webapp
+  name: simple-webapp-1
+  namespace: default
+spec:
+  containers:
+  - env:
+    - name: APP_START_DELAY
+      value: "80"
+    image: kodekloud/webapp-delayed-start
+    imagePullPolicy: Always
+    name: simple-webapp
+    ports:
+    - containerPort: 8080
+      protocol: TCP
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+    livenessProbe:
+      httpGet:
+        path: /live
+        port: 8080
+      periodSeconds: 1
+      initialDelaySeconds: 80	  
+		
+	
+       
