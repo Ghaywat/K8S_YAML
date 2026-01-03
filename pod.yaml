@@ -8,3 +8,21 @@ spec:
     image: nginx:1.14.2
     ports:
     - containerPort: 80
+
+# pod with env_variable
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: webapp-color
+  name: webapp-color
+  namespace: default
+spec:
+  containers:
+  - env:
+    - name: APP_COLOR
+      value: green
+    image: kodekloud/webapp-color
+    name: webapp-color
