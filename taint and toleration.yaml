@@ -1,0 +1,30 @@
+# taint and toleration
+
+# Create a taint on node01 with key of spray, value of mortein and effect of NoSchedule
+
+kubectl taint nodes node01 spray=mortein:NoSchedule
+
+
+# create another pod named bee with the nginx image, which has a toleration set to the taint mortein.
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bee
+spec:
+  containers:
+  - image: nginx
+    name: bee
+  tolerations:
+  - key: spray
+    value: mortein
+    effect: NoSchedule
+    operator: Equal
+	
+	
+# to remove taint set on any node01
+# kubectl taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-
+
+# taint on node tolerationon pods
+	
