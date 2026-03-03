@@ -101,12 +101,13 @@ metadata:
   name: example-cron
 spec:
   schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  concurrencyPolicy: Allow
   jobTemplate:
     spec:
       backoffLimit: 3
       ttlSecondsAfterFinished: 60
-      successfulJobsHistoryLimit: 2
-      failedJobsHistoryLimit: 2
       template:
         spec:
           containers:
@@ -114,7 +115,6 @@ spec:
             image: busybox
             command: ["echo", "Hello"]
           restartPolicy: Never
-
 
 apiVersion: batch/v1
 kind: Job
