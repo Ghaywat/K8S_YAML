@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: nginx-deployment
+ labels:
+   app: nginx
+spec:
+ replicas: 3
+ strategy:
+   type: Recreate
+ selector:
+   matchLabels:
+     app: nginx
+ template:
+   metadata:
+     labels:
+       app: nginx
+   spec:
+     containers:
+     - name: nginx
+       image: nginx:1.14.2
+       ports:
+       - containerPort: 80
+ strategy:
+   type: RollingUpdate
+   rollingUpdate:
+     maxSurge: 1
+     maxUnavailable: 1
+
+
+# kubectl set image deploy deploy_name nginx=nginx:1.12
+# kubectl edit deploy deploy_name
+
+# To check the rollout status:-
+# kubectl rollout status deployment/nginx-deployment
+
+# to check rollout history of deployment:
+# kubectl rollout history deployment/nginx-deployment
+
+# to see details of each revision:
+# kubectl rollout history deployment/nginx-deployment --revision=2
+
+# Rolling Back to a Previous Revision 
+# kubectl rollout undo deploy/deployment_name
+
+# rolling back to specific revision
+# kubectl rollout undo deployment/nginx-deployment --to-revision=2
+
